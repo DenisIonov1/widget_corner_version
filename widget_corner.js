@@ -291,7 +291,7 @@
         }
 
         .n7-suggestions-list {
-            display: flex;
+            display: flex; 
             display: none;
             gap: 10px;
             flex-direction: column;
@@ -339,6 +339,7 @@
 
         .n7-widget__description {
             align-self: center;
+            color: #222d38;
             font-size: 12px;
             text-decoration: underline;
             margin: 0;
@@ -706,11 +707,12 @@
     wrapper.className = "n7-widget";
 
     wrapper.innerHTML = `
+        <div></div>
         <div class="n7-widget__body" role="log" aria-live="polite">
             <div class="n7-message n7-message--bot">
 
                 <img class="n7-message__logo" data-logo>
-                <div class="n7-message__text n7-message__text--first">Задайте ваш вопрос.
+                <div class="n7-message__text n7-message__text--first">Задайте Ваш вопрос
                 </div>
             </div>
 
@@ -721,7 +723,7 @@
                     data-message="Узнать больше о квартирах в ЖК" aria-label="Узнать больше о квартирах в ЖК">Узнать
                     больше о квартирах в ЖК</button>
             </div>
-            <div class="n7-widget__description">Менеджер подключится в течение <br> 12 секунд  после вашего&nbsp;вопроса</div>
+            <div class="n7-widget__description">Менеджер подключится в течение <br> 10 секунд  после вашего&nbsp;вопроса</div>
     </div>
 
     <div class="n7-footer">
