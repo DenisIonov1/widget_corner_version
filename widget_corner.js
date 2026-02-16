@@ -203,8 +203,7 @@
             position: fixed;
             bottom: 90px;
             right: 20px;
-            max-width: 340px;
-            width: min(100vw, 360px);
+            width: min(100vw, 340px);
             height: min(85dvh, 450px);
             display: flex;
             flex-direction: column;
@@ -239,7 +238,7 @@
 
         .n7-message__text {
             white-space: pre-wrap;
-            padding: 6px 10px;
+            padding: 6px 10px 16px;
             width: fit-content;
             max-width: min(70%, 600px);
             background-color: #F2F2F2;
@@ -247,11 +246,18 @@
             overflow-wrap: break-word;
             word-break: break-word;
             line-height: 1.3;
+            position: relative;
         }
-
+        .n7-message__time {
+            position: absolute;
+            font-size: 11px;
+            right: 6px;
+            bottom: 1px;
+            opacity: 0.6;
+        }
         .n7-message__text--first {
             white-space: normal;
-
+            padding: 6px 10px;
         }
 
         .n7-message--bot {
@@ -331,6 +337,7 @@
         }
 
         .n7-widget__description {
+            align-self: center;
             font-size: 12px;
             text-decoration: underline;
             margin: 0;
@@ -565,12 +572,6 @@
             }
         }
 
-        @media (max-width: 415px) {
-            .n7-widget__description {
-                width: fit-content;
-                max-width: 290px;
-                align-self: center;
-            }
         }
     `;
     document.head.appendChild(style);
@@ -708,7 +709,8 @@
             <div class="n7-message n7-message--bot">
 
                 <img class="n7-message__logo" data-logo>
-                <div class="n7-message__text n7-message__text--first">Задайте ваш вопрос.</div>
+                <div class="n7-message__text n7-message__text--first">Задайте ваш вопрос.
+                </div>
             </div>
 
             <div class="n7-suggestions-list">
@@ -718,7 +720,7 @@
                     data-message="Узнать больше о квартирах в ЖК" aria-label="Узнать больше о квартирах в ЖК">Узнать
                     больше о квартирах в ЖК</button>
             </div>
-            <div class="n7-widget__description">Менеджер подключится в течение 12 секунд после вашего&nbsp;вопроса</div>
+            <div class="n7-widget__description">Менеджер подключится в течение <br> 12 секунд  после вашего&nbsp;вопроса</div>
     </div>
 
     <div class="n7-footer">
@@ -761,6 +763,15 @@
         return el.innerHTML;
     }
 
+    function formatTime(ts) {
+        const date = new Date(ts);
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const timestamp = `${hours}:${minutes}`
+
+        return timestamp;
+    }
+
     function applyLogo() {
         document.querySelectorAll('[data-logo]').forEach(img => {
             img.src = LOGO_URL;
@@ -769,7 +780,7 @@
     }
 
     function getRandomDelay() {
-        return Math.floor(Math.random() * 3001) + 12000;
+        return Math.floor(Math.random() * 3001) + 8000;
     }
 
     function generateMessageId() {
@@ -839,13 +850,14 @@
             saveMessages(messages);
         }
     }
-
-    function addMessage(text, type) {
+    
+    function addMessage(text, type, timestamp = Date.now()) {
         if (!text?.trim()) return null;
 
         const widgetBody = document.querySelector('.n7-widget__body');
         if (!widgetBody) return null;
 
+        const time = formatTime(timestamp);
         const safeText = escapeHtml(text.trim());
         const messageEl = document.createElement('div');
         messageEl.className = `n7-message n7-message--${type}`;
@@ -853,16 +865,16 @@
         if (type === 'bot') {
             messageEl.innerHTML = `
                 <img class="n7-message__logo" src="${LOGO_URL}" alt="${LOGO_ALT}">
-                <div class="n7-message__text">${safeText}</div>
+                <div class="n7-message__text">${safeText}<span class="n7-message__time">${time}</span></div>
             `;
         } else if (type === 'system') {
             messageEl.innerHTML = `
-                <div class="n7-message__text n7-message__text--system">${safeText}</div>
+                <div class="n7-message__text n7-message__text--system">${safeText}<span class="n7-message__time">${time}</span></div>
             `;
             messageEl.dataset.system = true;
         } else {
             messageEl.innerHTML = `
-                <div class="n7-message__text">${safeText}</div>
+                <div class="n7-message__text">${safeText}<span class="n7-message__time">${time}</span></div>
             `;
         }
 
@@ -1216,7 +1228,7 @@
         }
 
         messages.forEach(msg => {
-            addMessage(msg.text, msg.type, { skipSave: true });
+            addMessage(msg.text, msg.type, msg.timestamp);
         });
 
         const pending = [...messages].reverse().find(m => m.type === 'user' && m.status == 'pending');
