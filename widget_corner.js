@@ -707,7 +707,7 @@
     wrapper.className = "n7-widget";
 
     wrapper.innerHTML = `
-        <div></div>
+        <div class="n7-widget__close"></div>
         <div class="n7-widget__body" role="log" aria-live="polite">
             <div class="n7-message n7-message--bot">
 
@@ -1095,10 +1095,10 @@
             if (isFirstUserMessage) {
                 isFirstUserMessage = false;
 
-                showBotThinking(12);
+                showBotThinking(10);
 
                 await new Promise(resolve => {
-                    let remaining = 12;
+                    let remaining = 10;
                     const interval = setInterval(() => {
                         remaining--;
                         if (thinkingTimer?.counterEl) {
