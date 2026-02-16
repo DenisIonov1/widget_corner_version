@@ -226,7 +226,7 @@
             background-color: transparent;
             border: none;
             cursor: pointer;
-            tramsition: all 0.2s;
+            transition: all 0.2s;
         }
             
         .n7-widget__close-chat:hover {
