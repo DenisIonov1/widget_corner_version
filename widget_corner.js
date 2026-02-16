@@ -292,6 +292,7 @@
 
         .n7-suggestions-list {
             display: flex;
+            display: none;
             gap: 10px;
             flex-direction: column;
             align-items: flex-end;
