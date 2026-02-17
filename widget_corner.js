@@ -289,6 +289,7 @@
             text-wrap: pretty;
             padding: 6px 10px 16px;
             width: fit-content;
+            min-width: 16px;
             max-width: min(70%, 600px);
             background-color: #F2F2F2;
             border-radius: 11px 11px 11px 3px;
@@ -299,6 +300,7 @@
         }
         .n7-message__time {
             position: absolute;
+            white-space: nowrap;
             font-size: 11px;
             right: 6px;
             bottom: 1px;
@@ -870,7 +872,7 @@
         }
     }
     
-    function addMessage(text, type, timestamp = Date.now()) {
+    function addMessage(text, type, timestamp = Date.now(), isRestored = false) {
         if (!text?.trim()) return null;
 
         const widgetBody = document.querySelector('.n7-widget__body');
@@ -886,8 +888,10 @@
                 <img class="n7-message__logo" src="${LOGO_URL}" alt="${LOGO_ALT}">
                 <div class="n7-message__text">${safeText}<span class="n7-message__time">${time}</span></div>
             `;
-            messageSound.currentTime = 0;
-            messageSound.play().catch(() => {});
+            if (!isRestored) {
+                messageSound.currentTime = 0;
+                messageSound.play().catch(() => {}); 
+            }
         } else if (type === 'system') {
             messageEl.innerHTML = `
                 <div class="n7-message__text n7-message__text--system">${safeText}<span class="n7-message__time">${time}</span></div>
@@ -1244,7 +1248,7 @@
         }
 
         messages.forEach(msg => {
-            addMessage(msg.text, msg.type, msg.timestamp);
+            addMessage(msg.text, msg.type, msg.timestamp, true);
         });
 
         const pending = [...messages].reverse().find(m => m.type === 'user' && m.status == 'pending');
