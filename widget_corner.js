@@ -724,7 +724,7 @@
                 </div>
             </div>
 
-            <div class="n7-widget__description">Менеджер подключится в течение <br> 10 секунд  после вашего&nbsp;вопроса</div>
+            <div class="n7-widget__description">Менеджер подключится в течение <br> 12 секунд  после вашего&nbsp;вопроса</div>
     </div>
 
     <div class="n7-footer">
@@ -1112,10 +1112,10 @@
             if (isFirstUserMessage) {
                 isFirstUserMessage = false;
 
-                showBotThinking(10);
+                showBotThinking(12);
 
                 await new Promise(resolve => {
-                    let remaining = 10;
+                    let remaining = 12;
                     const interval = setInterval(() => {
                         remaining--;
                         if (thinkingTimer?.counterEl) {
