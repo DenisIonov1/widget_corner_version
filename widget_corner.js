@@ -7,10 +7,14 @@
         return;
     }
     const CONFIG = window.N7_WIDGET_CONFIG;
-
+    
     const PROJECTS = CONFIG.project;
     const LOGO_URL = CONFIG.logoUrl;
     const API_URL = 'https://sr.neuro7.pro:5009/webhook/widget';
+    const WHATSAPP = CONFIG.whatsapp;
+    const TELEGRAM = CONFIG.telegram;
+    const MAX = CONFIG.max;
+
 
     if (!PROJECTS || !LOGO_URL) {
         console.error("N7 Widget: в конфигурации есть незаполненные поля");
@@ -30,6 +34,7 @@
     let isFirstUserMessage = true;
     let isChatMounted = false;
     let isChatOpen = false;
+    let isMenuOpen = false;
     let userHasInteracted = false;
 
     const style = document.createElement("style");
@@ -625,7 +630,7 @@
             </button>
 
             <div class="n7-widget-social-menu">
-                <a href="#" class="n7-social-item">
+                <a href="${WHATSAPP}" class="n7-social-item">
                     <span class="n7-social-icon">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -646,7 +651,7 @@
                     <span class="n7-social-name">WhatsApp</span>
                 </a>
 
-                <a href="#" class="n7-social-item">
+                <a href="${TELEGRAM}" class="n7-social-item">
                     <span class="n7-social-icon">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -667,7 +672,7 @@
                     <span class="n7-social-name">Telegram</span>
                 </a>
 
-                <a href="#" class="n7-social-item">
+                <a href="${MAX}" class="n7-social-item">
                     <span class="n7-social-icon">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g clip-path="url(#clip0_169_35)">
@@ -776,6 +781,16 @@
 
     function mountWidget() {
         document.body.appendChild(wrapper);
+    }
+
+    function openMenu() {
+        launcher.menu.classList.add("open");
+        isMenuOpen = true;
+    }
+
+    function closeMenu() {
+        launcher.menu.classList.remove("open");
+        isMenuOpen = false;
     }
 
     function openChat() {
@@ -1297,7 +1312,7 @@
 
         closeChatBtn.addEventListener('click', () => {
             closeChat();
-            launcher.menu.classList.add("open");
+            openMenu();
         });
 
         window.addEventListener('online', () => {
@@ -1348,20 +1363,28 @@
 
         if (isChatOpen) {
             closeChat();
+            openMenu();
+            return;
         }
 
-        launcher.menu.classList.add("open");
+        if (isMenuOpen) {
+            closeMenu();
+            return;
+        }
+
+        openMenu();
     });
 
     launcher.closeMenuBtn.addEventListener("click", (e) => {
             e.stopPropagation();
+
             launcher.toggleBtn.classList.remove("animation-complete");
-            launcher.menu.classList.remove("open");
+            closeMenu();
             launcher.toggleBtn.classList.remove("open");
     });
 
     launcher.openChatBtn.addEventListener("click", () => {
-        launcher.menu.classList.remove("open");
+        closeMenu();
         openChat();
     });
     
