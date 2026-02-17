@@ -209,7 +209,7 @@
             flex-direction: column;
             background-color: #cccccc7a;
             border-radius: 16px;
-            padding-top: 28px;
+            padding-top: 10px;
             z-index: 2147483000;
         }
 
@@ -217,16 +217,18 @@
             padding: 0;
             width: 24px;
             height: 24px;
+            border-radius: 50%;
+            background-color: #F2F2F2;
             display: flex;
             justify-content: center;
             align-items: center;
             position: absolute;
-            right: 10px;
-            top: 2px;
-            background-color: transparent;
+            right: 15px;
+            top: 10px;
             border: none;
             cursor: pointer;
             transition: all 0.2s;
+            z-index: 4;
         }
             
         .n7-widget__close-chat:hover {
@@ -263,6 +265,7 @@
 
         .n7-message__text {
             white-space: pre-wrap;
+            text-wrap: pretty;
             padding: 6px 10px 16px;
             width: fit-content;
             max-width: min(70%, 600px);
@@ -1283,7 +1286,7 @@
 
         const form = document.querySelector('.n7-form');
         const messageInput = document.querySelector('.n7-input');
-        const closeChat = document.querySelector('.n7-widget__close-chat');
+        const closeChatBtn = document.querySelector('.n7-widget__close-chat');
 
         messageInput.addEventListener('keydown', (e) => {
             if (e.key === 'Enter' && !e.shiftKey && !e.ctrlKey && !e.metaKey) {
@@ -1292,8 +1295,9 @@
             }
         });
 
-        closeChat.addEventListener('click', () => {
-            wrapper.style.display = 'none';
+        closeChatBtn.addEventListener('click', () => {
+            closeChat();
+            launcher.menu.classList.add("open");
         });
 
         window.addEventListener('online', () => {
