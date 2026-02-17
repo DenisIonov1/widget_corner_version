@@ -188,6 +188,10 @@
         .n7-social-item:hover {
             background-color: #ededed;
         }
+        
+        .n7-social-item:active {
+            background-color: #e3e3e3
+        }
 
         button.n7-social-item {
            width: 100%;
@@ -630,7 +634,7 @@
             </button>
 
             <div class="n7-widget-social-menu">
-                <a href="${WHATSAPP}" class="n7-social-item">
+                <a href="${WHATSAPP}" target="_blank" class="n7-social-item">
                     <span class="n7-social-icon">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -651,7 +655,7 @@
                     <span class="n7-social-name">WhatsApp</span>
                 </a>
 
-                <a href="${TELEGRAM}" class="n7-social-item">
+                <a href="${TELEGRAM}" target="_blank" class="n7-social-item">
                     <span class="n7-social-icon">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path
@@ -672,7 +676,7 @@
                     <span class="n7-social-name">Telegram</span>
                 </a>
 
-                <a href="${MAX}" class="n7-social-item">
+                <a href="${MAX}" target="_blank" class="n7-social-item">
                     <span class="n7-social-icon">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <g clip-path="url(#clip0_169_35)">
