@@ -152,8 +152,8 @@
             z-index: 222292222;
             opacity: 0;
             visibility: hidden;
-            transform: translateY(10px);
-            transition: all 0.2s ease;
+            transform: translateY(20px);
+            transition: all 0.6s ease;
         }
 
         .n7-widget-social-menu.open {
@@ -220,6 +220,17 @@
             border-radius: 16px;
             padding-top: 10px;
             z-index: 2147483000;
+
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.6s ease;
+            transform: translateY(40px);
+        }
+
+        .n7-widget.open {
+            opacity: 1;
+            pointer-events: auto;
+            transform: translateY(0);
         }
 
         .n7-widget__close-chat {
@@ -740,7 +751,6 @@
     }
 
     const wrapper = document.createElement("div");
-    wrapper.style.display = "none";
     wrapper.className = "n7-widget";
 
     wrapper.innerHTML = `
@@ -803,13 +813,20 @@
             initWidget();
             isChatMounted = true;
         }
-        wrapper.style.display = "flex";
-        isChatOpen = true;
+        const chat = document.querySelector(".n7-widget");
+        void chat.offsetWidth;
+        if (chat) {
+            chat.classList.add("open");
+            isChatOpen = true;
+        }
     }
 
     function closeChat() {
-        wrapper.style.display = "none";
-        isChatOpen = false;
+        const chat = document.querySelector(".n7-widget");
+        if (chat) {
+            chat.classList.remove("open");
+            isChatOpen = false;
+        }
     }
 
     function escapeHtml(str) {
