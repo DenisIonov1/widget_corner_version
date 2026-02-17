@@ -25,6 +25,7 @@
     const CHAT_ID_KEY = 'chat_user_id';
     const CHAT_HISTORY_KEY = 'chat_history_v1';
     const MAX_MESSAGES = 30;
+    const messageSound = new Audio('sentMessageSound.mp3');
 
     let activeRequestId = 0;
     let safetyTimeout = null;
@@ -224,7 +225,7 @@
             opacity: 0;
             pointer-events: none;
             transition: all 0.6s ease;
-            transform: translateY(40px);
+            transform: translateY(30px);
         }
 
         .n7-widget.open {
@@ -1145,6 +1146,8 @@
         addMessage(text, 'user');
         disableInput();
         hideSuggestions();
+        messageSound.currentTime = 0;
+        messageSound.play().catch(() => {})
 
         try {
             const apiPromise = sendMessageToBackend(text);
