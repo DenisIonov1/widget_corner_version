@@ -339,53 +339,6 @@
             margin-left: 47px;
         }
 
-        .n7-suggestions-list {
-            display: flex; 
-            display: none;
-            gap: 10px;
-            flex-direction: column;
-            align-items: flex-end;
-        }
-
-        .n7-suggestions-list__item {
-            position: relative;
-            overflow: hidden;
-            font-size: 15px;
-            font-family: "Arial", sans-serif;
-            color: #222d38;
-            background-color: #ffffff;
-            padding: 6px 10px;
-            border-radius: 11px;
-            border: 1px solid #222d38;
-            transition: all 0.2s;
-            cursor: pointer;
-            transition: background-color 0.2s, transform 0.2s;
-            box-shadow: 1px 1px 5px 1px rgba(173, 170, 170, 0.619)
-        }
-
-        .n7-suggestions-list__item::after {
-            content: "";
-            position: absolute;
-            top: 0;
-            left: -120%;
-            width: 40%;
-            height: 100%;
-            background: linear-gradient(120deg,
-                    transparent,
-                    rgba(223, 214, 214, 0.878),
-                    transparent);
-            animation: shine 3.5s infinite;
-        }
-
-        .n7-suggestions-list__item:hover {
-            background-color: #e7e6e6;
-        }
-
-        .n7-suggestions-list__item:active {
-            background-color: #ffffff;
-            transform: scale(1.02);
-        }
-
         .n7-widget__description {
             align-self: center;
             color: #222d38;
@@ -769,13 +722,6 @@
                 </div>
             </div>
 
-            <div class="n7-suggestions-list">
-                <button type="button" class="n7-suggestions-list__item"  data-message="Узнать больше о ЖК" aria-label="Узнать больше о ЖК">Узнать
-                    больше о ЖК</button>
-                <button type="button" class="n7-suggestions-list__item"
-                    data-message="Узнать больше о квартирах в ЖК" aria-label="Узнать больше о квартирах в ЖК">Узнать
-                    больше о квартирах в ЖК</button>
-            </div>
             <div class="n7-widget__description">Менеджер подключится в течение <br> 10 секунд  после вашего&nbsp;вопроса</div>
     </div>
 
@@ -940,6 +886,8 @@
                 <img class="n7-message__logo" src="${LOGO_URL}" alt="${LOGO_ALT}">
                 <div class="n7-message__text">${safeText}<span class="n7-message__time">${time}</span></div>
             `;
+            messageSound.currentTime = 0;
+            messageSound.play().catch(() => {});
         } else if (type === 'system') {
             messageEl.innerHTML = `
                 <div class="n7-message__text n7-message__text--system">${safeText}<span class="n7-message__time">${time}</span></div>
@@ -976,22 +924,18 @@
     function disableInput() {
         const textarea = document.querySelector('.n7-input');
         const submitBtn = document.querySelector('.n7-submit');
-        const buttons = document.querySelectorAll('.n7-suggestions-list__item');
-
+        
         if (textarea) textarea.disabled = true;
         if (submitBtn) submitBtn.disabled = true;
-        buttons.forEach(btn => btn.disabled = true);
     }
 
     function enableInput() {
         const textarea = document.querySelector('.n7-input');
         const submitBtn = document.querySelector('.n7-submit');
-        const buttons = document.querySelectorAll('.n7-suggestions-list__item');
 
         if (textarea) textarea.disabled = false;
         if (submitBtn) submitBtn.disabled = false;
-        buttons.forEach(btn => btn.disabled = false);
-
+        
         if (textarea) setTimeout(() => textarea.focus(), 50);
     }
 
@@ -1093,7 +1037,6 @@
     }
 
     function hideSuggestions() {
-        document.querySelector('.n7-suggestions-list')?.remove();
         document.querySelector('.n7-widget__description')?.remove();
     }
 
@@ -1146,8 +1089,6 @@
         addMessage(text, 'user');
         disableInput();
         hideSuggestions();
-        messageSound.currentTime = 0;
-        messageSound.play().catch(() => {})
 
         try {
             const apiPromise = sendMessageToBackend(text);
@@ -1365,16 +1306,6 @@
             messageInput.focus();
 
             handleUserMessage(text)
-        });
-
-        document.addEventListener('click', (e) => {
-            const btn = e.target.closest('.n7-suggestions-list__item');
-            if (!btn) return;
-
-            const text = btn.dataset.message || btn.textContent;
-            if (!text.trim()) return;
-
-            handleUserMessage(text);
         });
 
         restoreChatAndRetry();
