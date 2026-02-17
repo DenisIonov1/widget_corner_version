@@ -285,7 +285,6 @@
 
         .n7-message__text {
             white-space: pre-wrap;
-            text-wrap: pretty;
             padding: 6px 10px 16px;
             width: fit-content;
             min-width: 16px;
