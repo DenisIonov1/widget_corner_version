@@ -217,7 +217,7 @@
             height: min(85dvh, 450px);
             display: flex;
             flex-direction: column;
-            background-color: rgba(240, 238, 238, 0.8);
+            background-color: rgba(167, 162, 162, 0.82);
             border-radius: 16px;
             padding-top: 10px;
             z-index: 2147483000;
