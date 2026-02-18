@@ -25,7 +25,7 @@
     const CHAT_ID_KEY = 'chat_user_id';
     const CHAT_HISTORY_KEY = 'chat_history_v1';
     const MAX_MESSAGES = 30;
-    const messageSound = new Audio('sentMessageSound.mp3');
+    const messageSound = new Audio('https://sr.neuro7.pro/static/sentMessageSound.mp3');
 
     let activeRequestId = 0;
     let safetyTimeout = null;
@@ -217,7 +217,7 @@
             height: min(85dvh, 450px);
             display: flex;
             flex-direction: column;
-            background-color: #cccccc7a;
+            background-color: rgba(240, 238, 238, 0.8);
             border-radius: 16px;
             padding-top: 10px;
             z-index: 2147483000;
