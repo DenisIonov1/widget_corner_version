@@ -10,17 +10,30 @@
     
     const PROJECTS = CONFIG.project;
     const LOGO_URL = CONFIG.logoUrl;
-    const API_URL = 'https://sr.neuro7.pro:5009/webhook/widget';
+    const BACKEND_PORT = CONFIG.backendPort;
+    
     const WHATSAPP = CONFIG.whatsapp;
     const TELEGRAM = CONFIG.telegram;
     const MAX = CONFIG.max;
 
+    const HAS_CUSTOM_BTN_COLOR =  typeof CONFIG.buttonColor === "string" && CONFIG.buttonColor.trim() !== ""; 
+    
+    const COLORS = {
+        buttonSolid: HAS_CUSTOM_BTN_COLOR ? CONFIG.buttonColor : "#418787",
+        
+        buttonGradient: HAS_CUSTOM_BTN_COLOR ? CONFIG.buttonColor : "linear-gradient(269.94deg, #418787 35.47%, #1F4037 53.35%, #418787 82.24%)",
 
-    if (!PROJECTS || !LOGO_URL) {
+        iconColor: CONFIG.iconColor || "#ffffff",
+
+        widgetColor: CONFIG.widgetColor || "rgba(167, 162, 162, 0.82)"
+    } 
+
+    if (!PROJECTS || !LOGO_URL || !BACKEND_PORT) {
         console.error("N7 Widget: в конфигурации есть незаполненные поля");
         return;
     }
 
+    const API_URL = `https://sr.neuro7.pro:${BACKEND_PORT}/webhook/widget`;
     const LOGO_ALT = 'Ассистент';
     const CHAT_ID_KEY = 'chat_user_id';
     const CHAT_HISTORY_KEY = 'chat_history_v1';
@@ -40,6 +53,12 @@
 
     const style = document.createElement("style");
     style.textContent = `
+        :root {
+            --n7-button-solid: ${COLORS.buttonSolid};
+            --n7-button-gradient: ${COLORS.buttonGradient};
+            --n7-icon-color: ${COLORS.iconColor};
+            --n7-widgetBackColor: ${COLORS.widgetColor};
+        }
         .n7-widget-btn {
             border: none;
             border-radius: 50%;
@@ -82,7 +101,8 @@
             height: 55px;
             border: none;
             border-radius: 50%;
-            background-color: #418787;
+            background: var(--n7-button-solid);
+            color: var(--n7-icon-color);
             padding: 0;
             display: flex;
             justify-content: center;
@@ -98,8 +118,8 @@
             font-family: Arial, sans-serif;
             width: 0;
             height: 55px;
-            background-color: #418787;
-            color: white;
+            background: var(--n7-button-gradient);
+            color: var(--n7-icon-color);
             border-radius: 0 28px 28px 0;
             display: flex;
             justify-content: center;
@@ -108,7 +128,6 @@
             font-size: 0;
             text-align: center;
             line-height: 1.2;
-            background: linear-gradient(269.94deg, #418787 35.47%, #1F4037 53.35%, #418787 82.24%);
             opacity: 0;
             transition: all 0.4s ease;
             width: 227px;
@@ -217,7 +236,7 @@
             height: min(85dvh, 450px);
             display: flex;
             flex-direction: column;
-            background-color: rgba(167, 162, 162, 0.82);
+            background: var(--n7-widgetBackColor);
             border-radius: 16px;
             padding-top: 10px;
             z-index: 2147483000;
@@ -595,8 +614,8 @@
                         aria-hidden="true">
                         <path
                             d="M6.5 19.5C6.5 16.0522 7.86964 12.7456 10.3076 10.3076C12.7456 7.86964 16.0522 6.5 19.5 6.5C22.9478 6.5 26.2544 7.86964 28.6924 10.3076C31.1304 12.7456 32.5 16.0522 32.5 19.5V27.7713C32.5 29.1493 32.5 29.835 32.2953 30.3859C32.1324 30.8224 31.8777 31.2188 31.5483 31.5483C31.2188 31.8777 30.8224 32.1324 30.3859 32.2953C29.835 32.5 29.1476 32.5 27.7713 32.5H19.5C16.0522 32.5 12.7456 31.1304 10.3076 28.6924C7.86964 26.2544 6.5 22.9478 6.5 19.5Z"
-                            stroke="white" stroke-width="2" />
-                        <path d="M14.625 17.875H24.375M19.5 24.375H24.375" stroke="white" stroke-width="2"
+                            stroke="currentColor" stroke-width="2" />
+                        <path d="M14.625 17.875H24.375M19.5 24.375H24.375" stroke="currentColor" stroke-width="2"
                             stroke-linecap="round" stroke-linejoin="round" />
                     </svg>
                 </div>
